@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require('path');
 
 let broadcaster;
 const port = process.env.PORT || 4000;
@@ -11,6 +12,22 @@ let watchers = 0;
 
 const io = require("socket.io")(server);
 app.use(express.static(__dirname + "/public"));
+
+app.get('/audio_broadcast', function(req, res) {
+  res.sendFile(path.join(__dirname + '/public/audio_broadcast.html'));
+});
+
+app.get('/video_broadcast', function(req, res) {
+  res.sendFile(path.join(__dirname + '/public/broadcast.html'));
+});
+
+app.get('/audio', function(req, res) {
+  res.sendFile(path.join(__dirname + '/public/audio.html'));
+});
+
+app.get('/video', function(req, res) {
+  res.sendFile(path.join(__dirname + '/public/index.html'));
+});
 
 io.sockets.on("error", e => console.log(e));
 io.sockets.on("connection", socket => {
